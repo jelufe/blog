@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "kdxfW2VRvdyPXrpXUpP2x9HcqAmn9cKClU8CA4xzNKXOgClYFu78uj8FcBBbD/bXmsyo7AszbZMEfxsjRBP9UA==",
+  "success": true,
+  "projectFilePath": "C:\\Desenvolvimento\\CleanArchCRUD\\CleanArchCRUD.Infrastructure\\CleanArchCRUD.Infrastructure.csproj",
+  "expectedPackageFiles": [
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
