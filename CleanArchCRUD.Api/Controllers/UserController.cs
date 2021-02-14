@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using CleanArchCRUD.Api.Responses;
 using CleanArchCRUD.Domain.DTOs;
 using CleanArchCRUD.Domain.Entities;
 using CleanArchCRUD.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CleanArchCRUD.Api.Controllers
@@ -24,14 +26,16 @@ namespace CleanArchCRUD.Api.Controllers
         public async Task<IActionResult> GetUsers()
         {
             var users = await _userRepository.GetUsers();
-            return Ok(users);
+            var response = new ApiResponse<IEnumerable<User>>(users);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _userRepository.GetUser(id);
-            return Ok(user);
+            var response = new ApiResponse<User>(user);
+            return Ok(response);
         }
 
         [HttpPost]
@@ -39,7 +43,24 @@ namespace CleanArchCRUD.Api.Controllers
         {
             var user = _mapper.Map<User>(userDto);
             await _userRepository.InsertUser(user);
-            return Ok(user);
+            var response = new ApiResponse<User>(user);
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(User user)
+        {
+            var result = await _userRepository.UpdateUser(user);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var result = await _userRepository.DeleteUser(id);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
         }
     }
 }

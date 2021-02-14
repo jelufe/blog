@@ -15,7 +15,7 @@ namespace CleanArchCRUD.Infrastructure.Data.Configurations
                 .HasMaxLength(200)
                 .IsUnicode(false);
 
-            builder.Property(e => e.Nome)
+            builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(200)
                 .IsUnicode(false);

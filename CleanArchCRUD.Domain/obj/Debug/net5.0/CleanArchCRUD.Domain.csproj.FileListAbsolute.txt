@@ -9,3 +9,4 @@ C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Domain\obj\Debug\net5.0\CleanArch
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Domain\obj\Debug\net5.0\CleanArchCRUD.Domain.dll
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Domain\obj\Debug\net5.0\ref\CleanArchCRUD.Domain.dll
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Domain\obj\Debug\net5.0\CleanArchCRUD.Domain.pdb
+C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Domain\obj\Debug\net5.0\CleanArchCRUD.Domain.csprojAssemblyReference.cache

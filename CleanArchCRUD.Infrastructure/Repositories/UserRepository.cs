@@ -35,5 +35,25 @@ namespace CleanArchCRUD.Infrastructure.Repositories
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> UpdateUser(User user)
+        {
+            var currentUser = await GetUser(user.UserId);
+            currentUser.Name = user.Name;
+            currentUser.Email = user.Email;
+            currentUser.Password = user.Password;
+
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
+        }
+
+        public async Task<bool> DeleteUser(int id)
+        {
+            var currentUser = await GetUser(id);
+            _context.Users.Remove(currentUser);
+
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
+        }
     }
 }

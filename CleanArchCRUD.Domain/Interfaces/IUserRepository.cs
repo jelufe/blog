@@ -9,5 +9,7 @@ namespace CleanArchCRUD.Domain.Interfaces
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUser(int id);
         Task InsertUser(User user);
+        Task<bool> UpdateUser(User user);
+        Task<bool> DeleteUser(int id);
     }
 }
