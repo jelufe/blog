@@ -1,4 +1,5 @@
 ﻿using CleanArchCRUD.Domain.Entities;
+using CleanArchCRUD.Infrastructure.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -22,25 +23,7 @@ namespace CleanArchCRUD.Infrastructure.Data
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.ToTable("User");
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Nome)
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
-            });
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }
