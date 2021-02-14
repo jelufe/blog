@@ -13,19 +13,19 @@ namespace CleanArchCRUD.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UserController(IUserRepository userRepository, IMapper mapper)
+        public UserController(IUserService userService, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userService = userService;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _userRepository.GetUsers();
+            var users = await _userService.GetUsers();
             var response = new ApiResponse<IEnumerable<User>>(users);
             return Ok(response);
         }
@@ -33,7 +33,7 @@ namespace CleanArchCRUD.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _userRepository.GetUser(id);
+            var user = await _userService.GetUser(id);
             var response = new ApiResponse<User>(user);
             return Ok(response);
         }
@@ -42,7 +42,7 @@ namespace CleanArchCRUD.Api.Controllers
         public async Task<IActionResult> InsertUser(UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
-            await _userRepository.InsertUser(user);
+            await _userService.InsertUser(user);
             var response = new ApiResponse<User>(user);
             return Ok(response);
         }
@@ -50,7 +50,7 @@ namespace CleanArchCRUD.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateUser(User user)
         {
-            var result = await _userRepository.UpdateUser(user);
+            var result = await _userService.UpdateUser(user);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }
@@ -58,7 +58,7 @@ namespace CleanArchCRUD.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var result = await _userRepository.DeleteUser(id);
+            var result = await _userService.DeleteUser(id);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }

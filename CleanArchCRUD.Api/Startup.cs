@@ -1,4 +1,5 @@
 using CleanArchCRUD.Domain.Interfaces;
+using CleanArchCRUD.Domain.Services;
 using CleanArchCRUD.Infrastructure.Data;
 using CleanArchCRUD.Infrastructure.Filters;
 using CleanArchCRUD.Infrastructure.Repositories;
@@ -39,6 +40,8 @@ namespace CleanArchCRUD.Api
             );
 
             services.AddTransient<IUserRepository, UserRepository>();
+
+            services.AddTransient<IUserService, UserService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
