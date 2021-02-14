@@ -1,16 +1,13 @@
+using CleanArchCRUD.Domain.Interfaces;
+using CleanArchCRUD.Infrastructure.Data;
+using CleanArchCRUD.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CleanArchCRUD.Api
 {
@@ -32,6 +29,12 @@ namespace CleanArchCRUD.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CleanArchCRUD.Api", Version = "v1" });
             });
+
+            services.AddDbContext<CleanArchCRUDContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("CleanArchCRUD"))
+            );
+
+            services.AddTransient<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
