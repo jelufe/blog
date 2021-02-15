@@ -77,3 +77,4 @@ C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\obj\Debug\net5.0\CleanArchCRU
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\obj\Debug\net5.0\ref\CleanArchCRUD.Api.dll
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\obj\Debug\net5.0\CleanArchCRUD.Api.pdb
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\obj\Debug\net5.0\CleanArchCRUD.Api.genruntimeconfig.cache
+C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

@@ -3,12 +3,14 @@ using CleanArchCRUD.Api.Responses;
 using CleanArchCRUD.Domain.DTOs;
 using CleanArchCRUD.Domain.Entities;
 using CleanArchCRUD.Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CleanArchCRUD.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
