@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchCRUD.Infrastructur
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{19ABA314-A1D6-4DBA-BDAE-433A82310A19}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchCRUD.UnitTests", "CleanArchCRUD.UnitTests\CleanArchCRUD.UnitTests.csproj", "{F4E1C975-6B1D-4826-8F52-3CFE19907C38}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchCRUD.IntegrationTests", "CleanArchCRUD.IntegrationTests\CleanArchCRUD.IntegrationTests.csproj", "{64FCF173-FAA3-4034-8BF1-F8FCD46482AD}"
 EndProject
 Global
@@ -33,10 +31,6 @@ Global
 		{BAD4F3FC-ECC5-4A20-A209-A5E5186DAC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAD4F3FC-ECC5-4A20-A209-A5E5186DAC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAD4F3FC-ECC5-4A20-A209-A5E5186DAC9C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4E1C975-6B1D-4826-8F52-3CFE19907C38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4E1C975-6B1D-4826-8F52-3CFE19907C38}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4E1C975-6B1D-4826-8F52-3CFE19907C38}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4E1C975-6B1D-4826-8F52-3CFE19907C38}.Release|Any CPU.Build.0 = Release|Any CPU
 		{64FCF173-FAA3-4034-8BF1-F8FCD46482AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{64FCF173-FAA3-4034-8BF1-F8FCD46482AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64FCF173-FAA3-4034-8BF1-F8FCD46482AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,7 +40,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F4E1C975-6B1D-4826-8F52-3CFE19907C38} = {19ABA314-A1D6-4DBA-BDAE-433A82310A19}
 		{64FCF173-FAA3-4034-8BF1-F8FCD46482AD} = {19ABA314-A1D6-4DBA-BDAE-433A82310A19}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

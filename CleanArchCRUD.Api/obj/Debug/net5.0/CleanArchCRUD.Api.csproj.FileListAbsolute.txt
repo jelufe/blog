@@ -13,6 +13,7 @@ C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\bin\Debug\net5.0\FluentValida
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\bin\Debug\net5.0\Humanizer.dll
+C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\bin\Debug\net5.0\Microsoft.AspNetCore.Razor.Language.dll
@@ -77,4 +78,3 @@ C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\obj\Debug\net5.0\CleanArchCRU
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\obj\Debug\net5.0\ref\CleanArchCRUD.Api.dll
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\obj\Debug\net5.0\CleanArchCRUD.Api.pdb
 C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\obj\Debug\net5.0\CleanArchCRUD.Api.genruntimeconfig.cache
-C:\Desenvolvimento\CleanArchCRUD\CleanArchCRUD.Api\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
