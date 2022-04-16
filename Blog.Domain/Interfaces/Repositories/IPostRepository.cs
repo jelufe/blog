@@ -6,7 +6,7 @@ namespace Blog.Domain.Interfaces.Repositories
 {
     public interface IPostRepository
     {
-        Task<IEnumerable<Post>> GetPosts();
+        Task<IEnumerable<Post>> GetPosts(int userId);
         Task<Post> GetPost(int id);
         Task<IEnumerable<Comment>> GetComments(int id);
         Task InsertPost(Post post);

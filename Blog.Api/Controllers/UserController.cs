@@ -12,7 +12,7 @@ namespace Blog.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : CustomControllerBase
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
@@ -27,6 +27,9 @@ namespace Blog.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
+            if (!IsAdmin)
+                return Forbid();
+
             var users = await _userService.GetUsers();
             var response = new ApiResponse<IEnumerable<User>>(users);
             return Ok(response);
@@ -34,15 +37,18 @@ namespace Blog.Api.Controllers
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        public async Task<IActionResult> GetUser([FromRoute] int id)
         {
+            if (!IsAdmin && CurrentUserId != id)
+                return Forbid();
+
             var user = await _userService.GetUser(id);
             var response = new ApiResponse<User>(user);
             return Ok(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> InsertUser(UserDto userDto)
+        public async Task<IActionResult> InsertUser([FromBody] UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
             await _userService.InsertUser(user);
@@ -52,8 +58,11 @@ namespace Blog.Api.Controllers
 
         [Authorize]
         [HttpPut]
-        public async Task<IActionResult> UpdateUser(User user)
+        public async Task<IActionResult> UpdateUser([FromBody] User user)
         {
+            if (!IsAdmin && CurrentUserId != user.UserId)
+                return Forbid();
+
             var result = await _userService.UpdateUser(user);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
@@ -61,8 +70,11 @@ namespace Blog.Api.Controllers
 
         [Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
+            if (!IsAdmin)
+                return Forbid();
+
             var result = await _userService.DeleteUser(id);
             var response = new ApiResponse<bool>(result);
             return Ok(response);

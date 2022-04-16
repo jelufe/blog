@@ -3,6 +3,7 @@ using Blog.Domain.Interfaces.Repositories;
 using Blog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Blog.Infrastructure.Repositories
@@ -16,11 +17,13 @@ namespace Blog.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Comment>> GetComments()
+        public async Task<IEnumerable<Comment>> GetComments(int userId)
         {
             var comments = await _context
                 .Comments
                 .Include(x => x.User)
+                .Include(x => x.Post)
+                .Where(x => (userId == 0 || x.UserId == userId))
                 .ToListAsync();
 
             return comments;

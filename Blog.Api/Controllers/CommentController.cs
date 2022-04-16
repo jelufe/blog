@@ -11,9 +11,10 @@ using System.Threading.Tasks;
 
 namespace Blog.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class CommentController : ControllerBase
+    public class CommentController : CustomControllerBase
     {
         private readonly ICommentService _commentService;
         private readonly IMapper _mapper;
@@ -27,22 +28,29 @@ namespace Blog.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetComments()
         {
-            var comments = await _commentService.GetComments();
+            IEnumerable<CommentDao> comments = new List<CommentDao>();
+
+            if (IsAdmin)
+                comments = await _commentService.GetComments();
+            else if (IsWriter)
+                comments = await _commentService.GetComments(CurrentUserId);
+            else if (IsReader)
+                return Forbid();
+
             var response = new ApiResponse<IEnumerable<CommentDao>>(comments);
             return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetComment(int id)
+        public async Task<IActionResult> GetComment([FromRoute] int id)
         {
             var comment = await _commentService.GetComment(id);
             var response = new ApiResponse<CommentDao>(comment);
             return Ok(response);
         }
 
-        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> InsertComment(CommentDto commentDto)
+        public async Task<IActionResult> InsertComment([FromBody] CommentDto commentDto)
         {
             var comment = _mapper.Map<Comment>(commentDto);
             await _commentService.InsertComment(comment);
@@ -50,20 +58,18 @@ namespace Blog.Api.Controllers
             return Ok(response);
         }
 
-        [Authorize]
         [HttpPut]
-        public async Task<IActionResult> UpdateComment(Comment comment)
+        public async Task<IActionResult> UpdateComment([FromBody] Comment comment)
         {
-            var result = await _commentService.UpdateComment(comment);
+            var result = await _commentService.UpdateComment(comment, IsAdmin, CurrentUserId);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }
 
-        [Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteComment(int id)
+        public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {
-            var result = await _commentService.DeleteComment(id);
+            var result = await _commentService.DeleteComment(id, IsAdmin, CurrentUserId);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }

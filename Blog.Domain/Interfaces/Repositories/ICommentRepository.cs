@@ -6,7 +6,7 @@ namespace Blog.Domain.Interfaces.Repositories
 {
     public interface ICommentRepository
     {
-        Task<IEnumerable<Comment>> GetComments();
+        Task<IEnumerable<Comment>> GetComments(int userId);
         Task<Comment> GetComment(int id);
         Task InsertComment(Comment comment);
         Task<bool> UpdateComment(Comment comment);

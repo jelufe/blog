@@ -13,7 +13,7 @@ namespace Blog.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class PostController : CustomControllerBase
     {
         private readonly IPostService _postService;
         private readonly IMapper _mapper;
@@ -24,8 +24,25 @@ namespace Blog.Api.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetPosts()
+        {
+            IEnumerable<PostDao> posts = new List<PostDao>();
+
+            if (IsAdmin)
+                posts = await _postService.GetPosts();
+            else if (IsWriter)
+                posts = await _postService.GetPosts(CurrentUserId);
+            else if (IsReader)
+                return Forbid();
+
+            var response = new ApiResponse<IEnumerable<PostDao>>(posts);
+            return Ok(response);
+        }
+
+        [HttpGet("All")]
+        public async Task<IActionResult> GetAllPosts()
         {
             var posts = await _postService.GetPosts();
             var response = new ApiResponse<IEnumerable<PostDao>>(posts);
@@ -33,7 +50,7 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPost(int id)
+        public async Task<IActionResult> GetPost([FromRoute] int id)
         {
             var post = await _postService.GetPost(id);
             var response = new ApiResponse<PostDao>(post);
@@ -41,7 +58,7 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet("{id}/Comment")]
-        public async Task<IActionResult> GetComments(int id)
+        public async Task<IActionResult> GetComments([FromRoute] int id)
         {
             var comments = await _postService.GetComments(id);
             var response = new ApiResponse<IEnumerable<CommentDao>>(comments);
@@ -50,8 +67,11 @@ namespace Blog.Api.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> InsertPost(PostDto postDto)
+        public async Task<IActionResult> InsertPost([FromBody] PostDto postDto)
         {
+            if (!IsAdmin && !IsWriter)
+                return Forbid();
+
             var post = _mapper.Map<Post>(postDto);
             await _postService.InsertPost(post);
             var response = new ApiResponse<Post>(post);
@@ -60,18 +80,24 @@ namespace Blog.Api.Controllers
 
         [Authorize]
         [HttpPut]
-        public async Task<IActionResult> UpdatePost(Post post)
+        public async Task<IActionResult> UpdatePost([FromBody] Post post)
         {
-            var result = await _postService.UpdatePost(post);
+            if (!IsAdmin && !IsWriter)
+                return Forbid();
+
+            var result = await _postService.UpdatePost(post, IsAdmin, CurrentUserId);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }
 
         [Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePost(int id)
+        public async Task<IActionResult> DeletePost([FromRoute] int id)
         {
-            var result = await _postService.DeletePost(id);
+            if (!IsAdmin && !IsWriter)
+                return Forbid();
+
+            var result = await _postService.DeletePost(id, IsAdmin, CurrentUserId);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }

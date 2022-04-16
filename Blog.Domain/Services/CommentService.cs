@@ -18,9 +18,9 @@ namespace Blog.Domain.Services
             _commentRepository = commentRepository;
         }
 
-        public async Task<IEnumerable<CommentDao>> GetComments()
+        public async Task<IEnumerable<CommentDao>> GetComments(int userId = 0)
         {
-            var comments = await _commentRepository.GetComments();
+            var comments = await _commentRepository.GetComments(userId);
             return comments.Select(p => new CommentDao(p)).ToList();
         }
 
@@ -39,22 +39,28 @@ namespace Blog.Domain.Services
             await _commentRepository.InsertComment(comment);
         }
 
-        public async Task<bool> UpdateComment(Comment comment)
+        public async Task<bool> UpdateComment(Comment comment, bool isAdmin, int currentUserId)
         {
             var commentFound = await _commentRepository.GetComment(comment.CommentId);
 
             if (commentFound == null)
                 throw new Exception("Comment does not exist");
 
+            if (!isAdmin && commentFound.User.UserId != currentUserId)
+                throw new Exception("User does not have permission to perform this action");
+
             return await _commentRepository.UpdateComment(comment);
         }
 
-        public async Task<bool> DeleteComment(int id)
+        public async Task<bool> DeleteComment(int id, bool isAdmin, int currentUserId)
         {
             var commentFound = await _commentRepository.GetComment(id);
 
             if (commentFound == null)
                 throw new Exception("Comment does not exist");
+
+            if (!isAdmin && commentFound.User.UserId != currentUserId)
+                throw new Exception("User does not have permission to perform this action");
 
             return await _commentRepository.DeleteComment(id);
         }

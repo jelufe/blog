@@ -17,11 +17,12 @@ namespace Blog.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Post>> GetPosts()
+        public async Task<IEnumerable<Post>> GetPosts(int userId)
         {
             var posts = await _context
                 .Posts
                 .Include(x => x.User)
+                .Where(x => (userId == 0 || x.UserId == userId))
                 .ToListAsync();
 
             return posts;
