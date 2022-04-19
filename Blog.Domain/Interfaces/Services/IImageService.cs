@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Blog.Domain.DAOs;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Blog.Domain.Interfaces.Services
 {
     public interface IImageService
     {
-        Task InsertImage(IFormFile file);
+        Task<IEnumerable<ImageDao>> GetImages(int userId = 0);
+        Task<byte[]> GetImage(int id);
+        Task InsertImage(IFormFile file, int currentUserId);
     }
 }

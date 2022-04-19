@@ -1,8 +1,13 @@
-﻿using Blog.Domain.Interfaces.Services;
+﻿using Blog.Domain.DAOs;
+using Blog.Domain.Entities;
+using Blog.Domain.Interfaces.Repositories;
+using Blog.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Blog.Domain.Services
@@ -10,25 +15,76 @@ namespace Blog.Domain.Services
     public class ImageService : IImageService
     {
         public static IWebHostEnvironment _environment;
+        private readonly IImageRepository _imageRepository;
 
-        public ImageService(IWebHostEnvironment environment)
+        public ImageService(
+            IWebHostEnvironment environment,
+            IImageRepository imageRepository)
         {
             _environment = environment;
+            _imageRepository = imageRepository;
         }
 
-        public async Task InsertImage(IFormFile file)
+        public async Task<IEnumerable<ImageDao>> GetImages(int userId = 0)
+        {
+            var images = await _imageRepository.GetImages(userId);
+            return images.Select(i => new ImageDao(i)).ToList();
+        }
+
+        public async Task<byte[]> GetImage(int id)
+        {
+            var image = await _imageRepository.GetImage(id);
+
+            if (image is null)
+                throw new Exception("Image does not exist");
+
+            byte[] fileBytes = await File.ReadAllBytesAsync($"{image.Path}{image.Name}");
+
+            return fileBytes;
+        }
+
+        public async Task InsertImage(IFormFile file, int currentUserId)
         {
             if (file is not null && file.Length > 0)
             {
-                if (!Directory.Exists(_environment.ContentRootPath + "\\images\\"))
+                string path = $"{_environment.ContentRootPath}\\images\\";
+
+                if (!Directory.Exists(path))
                 {
-                    Directory.CreateDirectory(_environment.ContentRootPath + "\\images\\");
+                    Directory.CreateDirectory(path);
                 }
 
-                using (FileStream filestream = System.IO.File.Create(_environment.ContentRootPath + "\\images\\" + file.FileName))
+                Image imageFound;
+                string extension = Path.GetExtension(file.FileName);
+                string newFileName = file.FileName.Remove(file.FileName.Length - extension.Length);
+                int newFileNameNumber = 0;
+
+                do
+                {
+                    if (newFileNameNumber > 0)
+                        imageFound = await _imageRepository.GetImage($"{newFileName}{newFileNameNumber}{extension}");
+                    else
+                        imageFound = await _imageRepository.GetImage($"{newFileName}{extension}");
+
+                    if (imageFound is not null)
+                        newFileNameNumber++;
+                } while (imageFound is not null);
+
+                string newFileNameConcatenated = $"{newFileName}{newFileNameNumber}{extension}";
+
+                using (FileStream filestream = File.Create($"{path}\\{newFileNameConcatenated}"))
                 {
                     await file.CopyToAsync(filestream);
                     filestream.Flush();
+
+                    var image = new Image
+                    {
+                        Name = newFileNameConcatenated,
+                        Path = path,
+                        UserId = currentUserId
+                    };
+
+                    await _imageRepository.InsertImage(image);
                 }
             }
             else

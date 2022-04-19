@@ -62,6 +62,8 @@ namespace Blog.Api
 
             services.AddTransient<ICommentService, CommentService>();
 
+            services.AddTransient<IImageRepository, ImageRepository>();
+
             services.AddTransient<IImageService, ImageService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

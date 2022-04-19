@@ -8,10 +8,6 @@ namespace Blog.Infrastructure.Data
 {
     public partial class BlogContext : DbContext
     {
-        public BlogContext()
-        {
-        }
-
         public BlogContext(DbContextOptions<BlogContext> options)
             : base(options)
         {
@@ -20,6 +16,7 @@ namespace Blog.Infrastructure.Data
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +25,7 @@ namespace Blog.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new PostConfiguration());
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
+            modelBuilder.ApplyConfiguration(new ImageConfiguration());
         }
     }
 }
