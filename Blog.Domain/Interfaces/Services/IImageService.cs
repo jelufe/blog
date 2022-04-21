@@ -10,5 +10,6 @@ namespace Blog.Domain.Interfaces.Services
         Task<IEnumerable<ImageDao>> GetImages(int userId = 0);
         Task<byte[]> GetImage(int id);
         Task InsertImage(IFormFile file, int currentUserId);
+        Task<bool> DeleteImage(int id, bool isAdmin, int currentUserId);
     }
 }

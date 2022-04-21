@@ -54,5 +54,17 @@ namespace Blog.Api.Controllers
 
             return Ok();
         }
+
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteImage([FromRoute] int id)
+        {
+            if (!IsAdmin && !IsWriter)
+                return Forbid();
+
+            var result = await _imageService.DeleteImage(id, IsAdmin, CurrentUserId);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
+        }
     }
 }

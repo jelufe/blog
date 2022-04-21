@@ -58,6 +58,7 @@ namespace Blog.Domain.Services
                 string extension = Path.GetExtension(file.FileName);
                 string newFileName = file.FileName.Remove(file.FileName.Length - extension.Length);
                 int newFileNameNumber = 0;
+                string newFileNameConcatenated;
 
                 do
                 {
@@ -70,27 +71,48 @@ namespace Blog.Domain.Services
                         newFileNameNumber++;
                 } while (imageFound is not null);
 
-                string newFileNameConcatenated = $"{newFileName}{newFileNameNumber}{extension}";
+                if (newFileNameNumber > 0)
+                    newFileNameConcatenated = $"{newFileName}{newFileNameNumber}{extension}";
+                else
+                    newFileNameConcatenated = $"{newFileName}{extension}";
 
                 using (FileStream filestream = File.Create($"{path}\\{newFileNameConcatenated}"))
                 {
                     await file.CopyToAsync(filestream);
                     filestream.Flush();
-
-                    var image = new Image
-                    {
-                        Name = newFileNameConcatenated,
-                        Path = path,
-                        UserId = currentUserId
-                    };
-
-                    await _imageRepository.InsertImage(image);
                 }
+
+                var image = new Image
+                {
+                    Name = newFileNameConcatenated,
+                    Path = path,
+                    UserId = currentUserId
+                };
+
+                await _imageRepository.InsertImage(image);
             }
             else
             {
                 throw new Exception("Ocorreu uma falha no envio do arquivo...");
             }
+        }
+
+        public async Task<bool> DeleteImage(int id, bool isAdmin, int currentUserId)
+        {
+            var imageFound = await _imageRepository.GetImage(id);
+
+            if (imageFound == null)
+                throw new Exception("Image does not exist");
+
+            if (!isAdmin && imageFound.User.UserId != currentUserId)
+                throw new Exception("User does not have permission to perform this action");
+
+            if (File.Exists($"{imageFound.Path}{imageFound.Name}"))
+            {
+                File.Delete($"{imageFound.Path}{imageFound.Name}");
+            }
+
+            return await _imageRepository.DeleteImage(id);
         }
     }
 }

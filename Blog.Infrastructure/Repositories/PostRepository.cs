@@ -22,6 +22,7 @@ namespace Blog.Infrastructure.Repositories
             var posts = await _context
                 .Posts
                 .Include(x => x.User)
+                .Include(x => x.Image)
                 .Where(x => (userId == 0 || x.UserId == userId))
                 .ToListAsync();
 
@@ -33,6 +34,7 @@ namespace Blog.Infrastructure.Repositories
             var post = await _context
                 .Posts
                 .Include(x => x.User)
+                .Include(x => x.Image)
                 .FirstOrDefaultAsync(u => u.PostId == id);
 
             return post;
@@ -61,6 +63,7 @@ namespace Blog.Infrastructure.Repositories
             currentPost.Title = post.Title;
             currentPost.Description = post.Description;
             currentPost.UserId = post.UserId;
+            currentPost.ImageId = post.ImageId;
 
             int rows = await _context.SaveChangesAsync();
             return rows > 0;
