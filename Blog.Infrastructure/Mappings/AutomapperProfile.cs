@@ -14,6 +14,8 @@ namespace Blog.Infrastructure.Mappings
             CreateMap<PostDto, Post>();
             CreateMap<Comment, CommentDto>();
             CreateMap<CommentDto, Comment>();
+            CreateMap<Notification, NotificationDto>();
+            CreateMap<NotificationDto, Notification>();
         }
     }
 }

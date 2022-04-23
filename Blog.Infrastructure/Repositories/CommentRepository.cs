@@ -39,10 +39,11 @@ namespace Blog.Infrastructure.Repositories
             return comments;
         }
 
-        public async Task InsertComment(Comment comment)
+        public async Task<bool> InsertComment(Comment comment)
         {
             _context.Comments.Add(comment);
-            await _context.SaveChangesAsync();
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
         }
 
         public async Task<bool> UpdateComment(Comment comment)

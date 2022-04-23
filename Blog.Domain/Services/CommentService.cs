@@ -34,9 +34,9 @@ namespace Blog.Domain.Services
             return new CommentDao(commentFound);
         }
 
-        public async Task InsertComment(Comment comment)
+        public async Task<bool> InsertComment(Comment comment)
         {
-            await _commentRepository.InsertComment(comment);
+            return await _commentRepository.InsertComment(comment);
         }
 
         public async Task<bool> UpdateComment(Comment comment, bool isAdmin, int currentUserId)

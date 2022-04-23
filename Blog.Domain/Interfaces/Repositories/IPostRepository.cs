@@ -9,7 +9,7 @@ namespace Blog.Domain.Interfaces.Repositories
         Task<IEnumerable<Post>> GetPosts(int userId);
         Task<Post> GetPost(int id);
         Task<IEnumerable<Comment>> GetComments(int id);
-        Task InsertPost(Post post);
+        Task<bool> InsertPost(Post post);
         Task<bool> UpdatePost(Post post);
         Task<bool> DeletePost(int id);
     }

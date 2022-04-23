@@ -10,7 +10,7 @@ namespace Blog.Domain.Interfaces.Services
         Task<IEnumerable<PostDao>> GetPosts(int userId = 0);
         Task<PostDao> GetPost(int id);
         Task<IEnumerable<CommentDao>> GetComments(int id);
-        Task InsertPost(Post post);
+        Task<bool> InsertPost(Post post);
         Task<bool> UpdatePost(Post post, bool isAdmin, int currentUserId);
         Task<bool> DeletePost(int id, bool isAdmin, int currentUserId);
     }

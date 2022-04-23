@@ -66,6 +66,10 @@ namespace Blog.Api
 
             services.AddTransient<IImageService, ImageService>();
 
+            services.AddTransient<INotificationRepository, NotificationRepository>();
+
+            services.AddTransient<INotificationService, NotificationService>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvc(options =>

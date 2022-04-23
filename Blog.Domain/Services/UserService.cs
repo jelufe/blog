@@ -31,9 +31,9 @@ namespace Blog.Domain.Services
             return userFound;
         }
 
-        public async Task InsertUser(User user)
+        public async Task<bool> InsertUser(User user)
         {
-            await _userRepository.InsertUser(user);
+            return await _userRepository.InsertUser(user);
         }
 
         public async Task<bool> UpdateUser(User user)

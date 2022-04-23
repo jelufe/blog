@@ -62,6 +62,20 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 GO
 
+CREATE TABLE [dbo].[Notification](
+	[NotificationId] [int] IDENTITY(1,1) NOT NULL,
+	[Title] [varchar](200) NOT NULL,
+	[Message] [text] NOT NULL,
+	[CreatedAt] [datetime] NOT NULL,
+	[UserId] int FOREIGN KEY REFERENCES [User]([UserId]) NOT NULL,
+	[ReceiverId] int FOREIGN KEY REFERENCES [User]([UserId])
+PRIMARY KEY CLUSTERED 
+(
+	[NotificationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 -- Insert Data
 
 INSERT INTO [User] (Name, Type, Email, Password)

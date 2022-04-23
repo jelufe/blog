@@ -51,10 +51,11 @@ namespace Blog.Infrastructure.Repositories
             return posts;
         }
 
-        public async Task InsertPost(Post post)
+        public async Task<bool> InsertPost(Post post)
         {
             _context.Posts.Add(post);
-            await _context.SaveChangesAsync();
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
         }
 
         public async Task<bool> UpdatePost(Post post)

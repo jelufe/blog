@@ -43,7 +43,7 @@ namespace Blog.Domain.Services
             return fileBytes;
         }
 
-        public async Task InsertImage(IFormFile file, int currentUserId)
+        public async Task<bool> InsertImage(IFormFile file, int currentUserId)
         {
             if (file is not null && file.Length > 0)
             {
@@ -89,7 +89,7 @@ namespace Blog.Domain.Services
                     UserId = currentUserId
                 };
 
-                await _imageRepository.InsertImage(image);
+                return await _imageRepository.InsertImage(image);
             }
             else
             {

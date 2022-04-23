@@ -39,7 +39,7 @@ namespace Blog.Domain.Services
         {
             var user = await _authRepository.ChangePassword(password);
 
-            if (user == null)
+            if (user is null)
                 throw new Exception("Incorrect email or oldPassword");
 
             return await _authRepository.ChangePassword(user, password.NewPassword);

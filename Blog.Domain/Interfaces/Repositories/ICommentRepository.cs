@@ -8,7 +8,7 @@ namespace Blog.Domain.Interfaces.Repositories
     {
         Task<IEnumerable<Comment>> GetComments(int userId);
         Task<Comment> GetComment(int id);
-        Task InsertComment(Comment comment);
+        Task<bool> InsertComment(Comment comment);
         Task<bool> UpdateComment(Comment comment);
         Task<bool> DeleteComment(int id);
     }

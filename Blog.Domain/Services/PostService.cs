@@ -46,9 +46,9 @@ namespace Blog.Domain.Services
             return comments.Select(p => new CommentDao(p)).ToList();
         }
 
-        public async Task InsertPost(Post post)
+        public async Task<bool> InsertPost(Post post)
         {
-            await _postRepository.InsertPost(post);
+            return await _postRepository.InsertPost(post);
         }
 
         public async Task<bool> UpdatePost(Post post, bool isAdmin, int currentUserId)

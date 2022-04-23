@@ -9,7 +9,7 @@ namespace Blog.Domain.Interfaces.Services
     {
         Task<IEnumerable<CommentDao>> GetComments(int userId = 0);
         Task<CommentDao> GetComment(int id);
-        Task InsertComment(Comment comment);
+        Task<bool> InsertComment(Comment comment);
         Task<bool> UpdateComment(Comment comment, bool isAdmin, int currentUserId);
         Task<bool> DeleteComment(int id, bool isAdmin, int currentUserId);
     }

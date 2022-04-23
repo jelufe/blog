@@ -48,10 +48,11 @@ namespace Blog.Infrastructure.Repositories
             return image;
         }
 
-        public async Task InsertImage(Image image)
+        public async Task<bool> InsertImage(Image image)
         {
             _context.Images.Add(image);
-            await _context.SaveChangesAsync();
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
         }
 
         public async Task<bool> DeleteImage(int id)

@@ -8,7 +8,7 @@ namespace Blog.Domain.Interfaces.Repositories
     {
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUser(int id);
-        Task InsertUser(User user);
+        Task<bool> InsertUser(User user);
         Task<bool> UpdateUser(User user);
         Task<bool> DeleteUser(int id);
     }

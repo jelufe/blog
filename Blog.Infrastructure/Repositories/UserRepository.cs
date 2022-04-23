@@ -30,10 +30,11 @@ namespace Blog.Infrastructure.Repositories
             return user;
         }
 
-        public async Task InsertUser(User user)
+        public async Task<bool> InsertUser(User user)
         {
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
         }
 
         public async Task<bool> UpdateUser(User user)
