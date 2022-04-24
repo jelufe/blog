@@ -20,6 +20,7 @@ namespace Blog.Infrastructure.Data
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Visualization> Visualizations { get; set; }
         public virtual DbSet<Like> Likes { get; set; }
+        public virtual DbSet<Sharing> Shares { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,7 @@ namespace Blog.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
             modelBuilder.ApplyConfiguration(new VisualizationConfiguration());
             modelBuilder.ApplyConfiguration(new LikeConfiguration());
+            modelBuilder.ApplyConfiguration(new SharingConfiguration());
         }
     }
 }

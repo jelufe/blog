@@ -78,6 +78,10 @@ namespace Blog.Api
 
             services.AddTransient<ILikeService, LikeService>();
 
+            services.AddTransient<ISharingRepository, SharingRepository>();
+
+            services.AddTransient<ISharingService, SharingService>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvc(options =>

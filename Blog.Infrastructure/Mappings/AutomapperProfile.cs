@@ -20,6 +20,8 @@ namespace Blog.Infrastructure.Mappings
             CreateMap<VisualizationDto, Visualization>();
             CreateMap<Like, LikeDto>();
             CreateMap<LikeDto, Like>();
+            CreateMap<Sharing, SharingDto>();
+            CreateMap<SharingDto, Sharing>();
         }
     }
 }
