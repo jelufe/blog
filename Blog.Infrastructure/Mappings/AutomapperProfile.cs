@@ -16,6 +16,8 @@ namespace Blog.Infrastructure.Mappings
             CreateMap<CommentDto, Comment>();
             CreateMap<Notification, NotificationDto>();
             CreateMap<NotificationDto, Notification>();
+            CreateMap<Visualization, VisualizationDto>();
+            CreateMap<VisualizationDto, Visualization>();
         }
     }
 }

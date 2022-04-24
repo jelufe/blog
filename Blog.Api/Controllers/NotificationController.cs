@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 namespace Blog.Api.Controllers
 {
     [Authorize]
+    [Route("api/[controller]")]
+    [ApiController]
     public class NotificationController : CustomControllerBase
     {
         private readonly INotificationService _notificationService;

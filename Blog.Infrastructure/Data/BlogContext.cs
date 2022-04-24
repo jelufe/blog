@@ -18,6 +18,7 @@ namespace Blog.Infrastructure.Data
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<Visualization> Visualizations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +29,7 @@ namespace Blog.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
             modelBuilder.ApplyConfiguration(new ImageConfiguration());
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
+            modelBuilder.ApplyConfiguration(new VisualizationConfiguration());
         }
     }
 }

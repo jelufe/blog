@@ -16,11 +16,16 @@ namespace Blog.Api.Controllers
     public class PostController : CustomControllerBase
     {
         private readonly IPostService _postService;
+        private readonly IVisualizationService _visualizationService;
         private readonly IMapper _mapper;
 
-        public PostController(IPostService postService, IMapper mapper)
+        public PostController(
+            IPostService postService,
+            IVisualizationService visualizationService,
+            IMapper mapper)
         {
             _postService = postService;
+            _visualizationService = visualizationService;
             _mapper = mapper;
         }
 
@@ -62,6 +67,20 @@ namespace Blog.Api.Controllers
         {
             var comments = await _postService.GetComments(id);
             var response = new ApiResponse<IEnumerable<CommentDao>>(comments);
+            return Ok(response);
+        }
+
+        [HttpGet("{postId}/Visualization")]
+        public async Task<IActionResult> GetVisualization([FromRoute] int postId, [FromQuery] int userId, [FromQuery] string sessionId)
+        {
+            var visualization = new VisualizationDao();
+
+            if (userId > 0)
+                visualization = await _visualizationService.GetVisualization(postId, userId);
+            else if (!string.IsNullOrEmpty(sessionId))
+                visualization = await _visualizationService.GetVisualization(postId, sessionId);
+
+            var response = new ApiResponse<VisualizationDao>(visualization);
             return Ok(response);
         }
 

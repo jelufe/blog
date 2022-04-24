@@ -37,6 +37,7 @@ namespace Blog.Domain.Services
         public async Task<bool> InsertNotification(Notification notification)
         {
             notification.CreatedAt = DateTime.Now;
+            notification.ReceiverId = notification.ReceiverId > 0 ? notification.ReceiverId : null;
 
             return await _notificationRepository.InsertNotification(notification);
         }
@@ -50,6 +51,8 @@ namespace Blog.Domain.Services
 
             if (!isAdmin && notificationFound.User.UserId != currentUserId)
                 throw new Exception("User does not have permission to perform this action");
+
+            notification.ReceiverId = notification.ReceiverId > 0 ? notification.ReceiverId : null;
 
             return await _notificationRepository.UpdateNotification(notification);
         }
