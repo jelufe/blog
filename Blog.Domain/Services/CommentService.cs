@@ -36,6 +36,8 @@ namespace Blog.Domain.Services
 
         public async Task<bool> InsertComment(Comment comment)
         {
+            comment.CreatedAt = DateTime.Now;
+
             return await _commentRepository.InsertComment(comment);
         }
 

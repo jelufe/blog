@@ -82,6 +82,10 @@ namespace Blog.Api
 
             services.AddTransient<ISharingService, SharingService>();
 
+            services.AddTransient<IDashboardRepository, DashboardRepository>();
+
+            services.AddTransient<IDashboardService, DashboardService>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvc(options =>

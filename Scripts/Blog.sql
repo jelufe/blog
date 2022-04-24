@@ -53,6 +53,7 @@ GO
 CREATE TABLE [dbo].[Comment](
 	[CommentId] [int] IDENTITY(1,1) NOT NULL,
 	[Message] [text] NOT NULL,
+	[CreatedAt] [datetime] NOT NULL,
 	[UserId] int FOREIGN KEY REFERENCES [User]([UserId]) NOT NULL,
 	[PostId] int FOREIGN KEY REFERENCES [Post]([PostId]) NOT NULL
 PRIMARY KEY CLUSTERED 
