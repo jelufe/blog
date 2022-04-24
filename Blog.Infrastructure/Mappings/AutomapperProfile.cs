@@ -18,6 +18,8 @@ namespace Blog.Infrastructure.Mappings
             CreateMap<NotificationDto, Notification>();
             CreateMap<Visualization, VisualizationDto>();
             CreateMap<VisualizationDto, Visualization>();
+            CreateMap<Like, LikeDto>();
+            CreateMap<LikeDto, Like>();
         }
     }
 }

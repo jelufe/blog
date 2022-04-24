@@ -17,15 +17,18 @@ namespace Blog.Api.Controllers
     {
         private readonly IPostService _postService;
         private readonly IVisualizationService _visualizationService;
+        private readonly ILikeService _likeService;
         private readonly IMapper _mapper;
 
         public PostController(
             IPostService postService,
             IVisualizationService visualizationService,
+            ILikeService likeService,
             IMapper mapper)
         {
             _postService = postService;
             _visualizationService = visualizationService;
+            _likeService = likeService;
             _mapper = mapper;
         }
 
@@ -81,6 +84,15 @@ namespace Blog.Api.Controllers
                 visualization = await _visualizationService.GetVisualization(postId, sessionId);
 
             var response = new ApiResponse<VisualizationDao>(visualization);
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpGet("{postId}/Like")]
+        public async Task<IActionResult> GetLike([FromRoute] int postId)
+        {
+            var like = await _likeService.GetLike(postId, CurrentUserId);
+            var response = new ApiResponse<LikeDao>(like);
             return Ok(response);
         }
 

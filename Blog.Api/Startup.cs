@@ -74,6 +74,10 @@ namespace Blog.Api
 
             services.AddTransient<IVisualizationService, VisualizationService>();
 
+            services.AddTransient<ILikeRepository, LikeRepository>();
+
+            services.AddTransient<ILikeService, LikeService>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvc(options =>
