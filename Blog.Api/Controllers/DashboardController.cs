@@ -23,6 +23,9 @@ namespace Blog.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetDashboardData()
         {
+            if (!IsAdmin && !IsWriter)
+                return Forbid();
+
             var dashboardData = await _dashboardService.GetDashboardData();
             var response = new ApiResponse<Dashboard>(dashboardData);
             return Ok(response);

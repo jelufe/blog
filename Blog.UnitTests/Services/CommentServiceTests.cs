@@ -83,7 +83,7 @@ namespace Blog.UnitTests.Services
                 .ReturnsAsync(true);
 
             // Act
-            var action = await _commentService.InsertComment(It.IsAny<Comment>());
+            var action = await _commentService.InsertComment(new Comment());
 
             // Assert
             action.Should().BeTrue();
