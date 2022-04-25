@@ -118,5 +118,5 @@ GO
 -- Insert Data
 
 INSERT INTO [User] (Name, Type, Email, Password)
-VALUES ('admin', 'Administrator', 'admin@teste.com', 'testando123')
+VALUES ('Admin', 'Administrator', 'admin@teste.com', 'testando123')
 GO
