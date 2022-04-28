@@ -18,10 +18,6 @@ namespace Blog.Infrastructure.Validators
             RuleFor(user => user.Email)
                 .NotNull()
                 .Length(1, 200);
-
-            RuleFor(user => user.Password)
-                .NotNull()
-                .Length(1, 200);
         }
     }
 }

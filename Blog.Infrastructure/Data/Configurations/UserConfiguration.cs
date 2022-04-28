@@ -19,11 +19,6 @@ namespace Blog.Infrastructure.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(200)
                 .IsUnicode(false);
-
-            builder.Property(e => e.Password)
-                .IsRequired()
-                .HasMaxLength(200)
-                .IsUnicode(false);
         }
     }
 }

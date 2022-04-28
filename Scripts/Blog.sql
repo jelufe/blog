@@ -16,8 +16,9 @@ CREATE TABLE [dbo].[User](
 	[UserId] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](200) NOT NULL,
 	[Type] [varchar](20) NOT NULL CHECK ([Type] IN('Administrator', 'Writer', 'Reader')),
+	[GoogleId] [varchar](200),
 	[Email] [varchar](200) NOT NULL UNIQUE,
-	[Password] [varchar](200) NOT NULL,
+	[Password] [varchar](200),
 PRIMARY KEY CLUSTERED 
 (
 	[UserId] ASC

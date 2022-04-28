@@ -44,6 +44,7 @@ namespace Blog.Infrastructure.Repositories
             currentUser.Type = user.Type;
             currentUser.Email = user.Email;
             currentUser.Password = user.Password;
+            currentUser.GoogleId = user.GoogleId;
 
             int rows = await _context.SaveChangesAsync();
             return rows > 0;

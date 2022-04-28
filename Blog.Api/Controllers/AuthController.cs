@@ -34,6 +34,20 @@ namespace Blog.Api.Controllers
             return Ok(response);
         }
 
+        [HttpPost("google")]
+        public async Task<IActionResult> GoogleAuthentication([FromBody] AuthGoogleDto auth)
+        {
+            var token = await _authService.GetUserByGoogleToken(
+                auth.Token,
+                _configuration["Authentication:SecretKey"],
+                _configuration["Authentication:Issuer"],
+                _configuration["Authentication:Audience"]
+            );
+
+            var response = new ApiResponse<AuthenticationResponse>(new AuthenticationResponse(token));
+            return Ok(response);
+        }
+
         [Authorize]
         [HttpPatch]
         public async Task<IActionResult> ChangePassword([FromBody] PasswordDto password)

@@ -1,7 +1,9 @@
 ﻿using Blog.Domain.DTOs;
 using Blog.Domain.Entities;
+using Blog.Domain.Enumerations;
 using Blog.Domain.Interfaces.Repositories;
 using Blog.Domain.Interfaces.Services;
+using Google.Apis.Auth;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,10 +16,14 @@ namespace Blog.Domain.Services
     public class AuthService : IAuthService
     {
         private readonly IAuthRepository _authRepository;
+        private readonly IUserService _userRepository;
 
-        public AuthService(IAuthRepository authRepository)
+        public AuthService(
+            IAuthRepository authRepository,
+            IUserService userRepository)
         {
             _authRepository = authRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<string> GetUserByCredentials(
@@ -31,6 +37,50 @@ namespace Blog.Domain.Services
 
             if (user == null)
                 throw new Exception("Incorrect email or password");
+
+            return GenerateToken(user, secretKey, issuer, audience);
+        }
+
+        public async Task<string> GetUserByGoogleToken(
+            string googleToken,
+            string secretKey,
+            string issuer,
+            string audience
+        )
+        {
+            GoogleJsonWebSignature.Payload googleUser = await GoogleJsonWebSignature.ValidateAsync(googleToken);
+
+            var user = await _authRepository.GetUserByGoogleId(googleUser.Subject);
+
+            if (user is null)
+            {
+                var userByEmail = await _authRepository.GetUserByEmail(googleUser.Email);
+
+                if (userByEmail is null)
+                {
+                    var newUser = new User()
+                    {
+                        Email = googleUser.Email,
+                        Name = googleUser.Name,
+                        GoogleId = googleUser.Subject,
+                        Type = UserTypeEnumeration.Administrator.Description,
+                        Password = null
+                    };
+
+                    await _userRepository.InsertUser(newUser);
+
+                    var userInserted = await _authRepository.GetUserByEmail(googleUser.Email);
+
+                    return GenerateToken(userInserted, secretKey, issuer, audience);
+                } else
+                {
+                    userByEmail.GoogleId = googleUser.Subject;
+
+                    await _userRepository.UpdateUser(userByEmail);
+
+                    return GenerateToken(userByEmail, secretKey, issuer, audience);
+                }
+            }
 
             return GenerateToken(user, secretKey, issuer, audience);
         }
@@ -61,7 +111,8 @@ namespace Blog.Domain.Services
                 new Claim("userId", user.UserId.ToString()),
                 new Claim("username", user.Name),
                 new Claim("email", user.Email),
-                new Claim("role", user.Type)
+                new Claim("role", user.Type),
+                new Claim("googleId", user.GoogleId is null ? string.Empty : user.GoogleId)
             };
 
             var payload = new JwtPayload

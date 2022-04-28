@@ -26,6 +26,24 @@ namespace Blog.Infrastructure.Repositories
             return user;
         }
 
+        public async Task<User> GetUserByGoogleId(string googleId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u =>
+                u.GoogleId == googleId
+            );
+
+            return user;
+        }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u =>
+                u.Email == email
+            );
+
+            return user;
+        }
+
         public async Task<bool> ChangePassword(User user, string newPassword)
         {
             user.Password = newPassword;
