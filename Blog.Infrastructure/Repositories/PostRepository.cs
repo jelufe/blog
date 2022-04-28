@@ -72,6 +72,18 @@ namespace Blog.Infrastructure.Repositories
 
         public async Task<bool> DeletePost(int id)
         {
+            var shares = await _context.Shares.Where(x => x.PostId == id).ToListAsync();
+            _context.Shares.RemoveRange(shares);
+
+            var visualizations = await _context.Visualizations.Where(x => x.PostId == id).ToListAsync();
+            _context.Visualizations.RemoveRange(visualizations);
+
+            var comments = await _context.Comments.Where(x => x.PostId == id).ToListAsync();
+            _context.Comments.RemoveRange(comments);
+
+            var likes = await _context.Likes.Where(x => x.PostId == id).ToListAsync();
+            _context.Likes.RemoveRange(likes);
+
             var currentPost = await GetPost(id);
             _context.Posts.Remove(currentPost);
 

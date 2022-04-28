@@ -8,7 +8,6 @@ namespace Blog.Domain.Interfaces.Services
     public interface IImageService
     {
         Task<IEnumerable<ImageDao>> GetImages(int userId = 0);
-        Task<byte[]> GetImage(int id);
         Task<bool> InsertImage(IFormFile file, int currentUserId);
         Task<bool> DeleteImage(int id, bool isAdmin, int currentUserId);
     }

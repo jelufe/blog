@@ -37,12 +37,6 @@ namespace Blog.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetImage([FromRoute] int id)
-        {
-            return File(await _imageService.GetImage(id), "image/jpg");
-        }
-
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Upload([FromForm] IFormFile file)

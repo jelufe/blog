@@ -1,9 +1,11 @@
-﻿using Blog.Domain.DAOs;
+﻿using Azure.Storage.Blobs;
+using Blog.Domain.DAOs;
 using Blog.Domain.Entities;
 using Blog.Domain.Interfaces.Repositories;
 using Blog.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,13 +18,16 @@ namespace Blog.Domain.Services
     {
         public static IWebHostEnvironment _environment;
         private readonly IImageRepository _imageRepository;
+        private readonly IConfiguration _configuration;
 
         public ImageService(
             IWebHostEnvironment environment,
-            IImageRepository imageRepository)
+            IImageRepository imageRepository,
+            IConfiguration configuration)
         {
             _environment = environment;
             _imageRepository = imageRepository;
+            _configuration = configuration;
         }
 
         public async Task<IEnumerable<ImageDao>> GetImages(int userId = 0)
@@ -31,28 +36,12 @@ namespace Blog.Domain.Services
             return images.Select(i => new ImageDao(i)).ToList();
         }
 
-        public async Task<byte[]> GetImage(int id)
-        {
-            var image = await _imageRepository.GetImage(id);
-
-            if (image is null)
-                throw new Exception("Image does not exist");
-
-            byte[] fileBytes = await File.ReadAllBytesAsync($"{image.Path}{image.Name}");
-
-            return fileBytes;
-        }
-
         public async Task<bool> InsertImage(IFormFile file, int currentUserId)
         {
             if (file is not null && file.Length > 0)
             {
-                string path = $"{_environment.ContentRootPath}\\images\\";
-
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
+                BlobServiceClient blobServiceClient = new BlobServiceClient(_configuration["Azure:StorageKey"]);
+                BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(_configuration["Azure:Container"]);
 
                 Image imageFound;
                 string extension = Path.GetExtension(file.FileName);
@@ -76,11 +65,10 @@ namespace Blog.Domain.Services
                 else
                     newFileNameConcatenated = $"{newFileName}{extension}";
 
-                using (FileStream filestream = File.Create($"{path}\\{newFileNameConcatenated}"))
-                {
-                    await file.CopyToAsync(filestream);
-                    filestream.Flush();
-                }
+                BlobClient blobClient = containerClient.GetBlobClient(newFileNameConcatenated);
+                await blobClient.UploadAsync(file.OpenReadStream());
+
+                string path = $"{_configuration["Azure:BlobPath"]}{newFileNameConcatenated}";
 
                 var image = new Image
                 {
@@ -107,10 +95,10 @@ namespace Blog.Domain.Services
             if (!isAdmin && imageFound.User.UserId != currentUserId)
                 throw new Exception("User does not have permission to perform this action");
 
-            if (File.Exists($"{imageFound.Path}{imageFound.Name}"))
-            {
-                File.Delete($"{imageFound.Path}{imageFound.Name}");
-            }
+            BlobServiceClient blobServiceClient = new BlobServiceClient(_configuration["Azure:StorageKey"]);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(_configuration["Azure:Container"]);
+            var blob = containerClient.GetBlobClient(imageFound.Name);
+            blob.DeleteIfExists();
 
             return await _imageRepository.DeleteImage(id);
         }
