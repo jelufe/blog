@@ -34,6 +34,7 @@ namespace Blog.Infrastructure.Repositories
             var comments = await _context
                 .Comments
                 .Include(x => x.User)
+                .Include(x => x.Post)
                 .FirstOrDefaultAsync(u => u.CommentId == id);
 
             return comments;
