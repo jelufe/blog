@@ -6,6 +6,7 @@ using Blog.Domain.Services;
 using Bogus;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Blog.UnitTests.Services
     {
         private readonly Mock<IWebHostEnvironment> _mockWebHostEnvironment;
         private readonly Mock<IImageRepository> _mockImageRepository;
+        private readonly Mock<IConfiguration> _mockconfiguration;
         private readonly IImageService _imageService;
 
         private static Faker _faker = new Faker("pt_BR");
@@ -26,10 +28,12 @@ namespace Blog.UnitTests.Services
         {
             _mockWebHostEnvironment = new Mock<IWebHostEnvironment>();
             _mockImageRepository = new Mock<IImageRepository>();
+            _mockconfiguration = new Mock<IConfiguration>();
 
             _imageService = new ImageService(
                 _mockWebHostEnvironment.Object,
-                _mockImageRepository.Object);
+                _mockImageRepository.Object,
+                _mockconfiguration.Object);
         }
 
         [Fact]
@@ -46,27 +50,6 @@ namespace Blog.UnitTests.Services
             // Assert
             images.Should().BeOfType<List<ImageDao>>();
             _mockImageRepository.Verify(x => x.GetImages(It.IsAny<int>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task DeleteImage_ShouldReturnTrue_WhenEverythingIsOk()
-        {
-            //Arrange
-            _mockImageRepository
-                .Setup(x => x.GetImage(It.IsAny<int>()))
-                .ReturnsAsync(new Image());
-
-            _mockImageRepository
-                .Setup(x => x.DeleteImage(It.IsAny<int>()))
-                .ReturnsAsync(true);
-
-            // Act
-            var action = await _imageService.DeleteImage(It.IsAny<int>(), true, It.IsAny<int>());
-
-            // Assert
-            action.Should().BeTrue();
-            _mockImageRepository.Verify(x => x.GetImage(It.IsAny<int>()), Times.Once);
-            _mockImageRepository.Verify(x => x.DeleteImage(It.IsAny<int>()), Times.Once);
         }
 
         [Fact]

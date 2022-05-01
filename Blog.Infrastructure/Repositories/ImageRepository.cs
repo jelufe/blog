@@ -57,6 +57,21 @@ namespace Blog.Infrastructure.Repositories
 
         public async Task<bool> DeleteImage(int id)
         {
+            var posts = await _context.Posts.Where(x => x.ImageId == id).ToListAsync();
+            _context.Posts.RemoveRange(posts);
+
+            var sharesbyPosts = await _context.Shares.Where(x => posts.Select(p => p.PostId).Contains(x.PostId)).ToListAsync();
+            _context.Shares.RemoveRange(sharesbyPosts);
+
+            var visualizationsbyPosts = await _context.Visualizations.Where(x => posts.Select(p => p.PostId).Contains(x.PostId)).ToListAsync();
+            _context.Visualizations.RemoveRange(visualizationsbyPosts);
+
+            var commentsbyPosts = await _context.Comments.Where(x => posts.Select(p => p.PostId).Contains(x.PostId)).ToListAsync();
+            _context.Comments.RemoveRange(commentsbyPosts);
+
+            var likesbyPosts = await _context.Likes.Where(x => posts.Select(p => p.PostId).Contains(x.PostId)).ToListAsync();
+            _context.Likes.RemoveRange(likesbyPosts);
+
             var currentImage = await GetImage(id);
             _context.Images.Remove(currentImage);
 

@@ -15,6 +15,7 @@ namespace Blog.UnitTests.Services
     public class AuthServiceTests
     {
         private readonly Mock<IAuthRepository> _mockAuthRepository;
+        private readonly Mock<IUserService> _mockUserRepository;
         private readonly IAuthService _authService;
 
         private static Faker _faker = new Faker("pt_BR");
@@ -22,7 +23,8 @@ namespace Blog.UnitTests.Services
         public AuthServiceTests()
         {
             _mockAuthRepository = new Mock<IAuthRepository>();
-            _authService = new AuthService(_mockAuthRepository.Object);
+            _mockUserRepository = new Mock<IUserService>();
+            _authService = new AuthService(_mockAuthRepository.Object, _mockUserRepository.Object);
         }
 
         [Fact]
